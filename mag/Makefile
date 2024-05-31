@@ -1,4 +1,4 @@
-PROJECT_NAME ?= tt_um_mattvenn_r2r_dac
+PROJECT_NAME ?= tt_um_rejunity_ay8913
 MAGIC_RC := $(PDK_ROOT)/sky130A/libs.tech/magic/sky130A.magicrc
 
 .PHONY: lvs magic start
@@ -8,13 +8,17 @@ magic:
 
 tt_block_1x2_pg_ana.def:
 	# https://github.com/TinyTapeout/tt-support-tools/blob/tt06/def/analog/tt_block_1x2_pg_ana.def
-	wget https://raw.githubusercontent.com/TinyTapeout/tt-support-tools/tt06/def/analog/tt_block_1x2_pg_ana.def
+	wget https://raw.githubusercontent.com/TinyTapeout/tt-support-tools/tt07/def/analog/tt_block_1x2_pg_ana.def
 
 start: tt_block_1x2_pg_ana.def
 	magic -rcfile $(MAGIC_RC) -noconsole -dnull tcl/tt-analog-draw.tcl $(PROJECT_NAME)
 
 $(PROJECT_NAME).lvs.spice: $(PROJECT_NAME).mag
 	magic -noconsole -dnull tcl/extract_for_lvs.tcl $(PROJECT_NAME)
+	rm -f *.ext
+
+antenna:
+	magic -noconsole -dnull tcl/antenna.tcl $(PROJECT_NAME)
 	rm -f *.ext
 
 drc:
