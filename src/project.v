@@ -2,7 +2,7 @@
 
 // just a stub to keep the Tiny Tapeout tools happy
 
-module tt_um_mattvenn_r2r_dac (
+module tt_um_rejunity_ay8913 (
     input  wire       VGND,
     input  wire       VPWR,
     input  wire [7:0] ui_in,    // Dedicated inputs
@@ -10,64 +10,106 @@ module tt_um_mattvenn_r2r_dac (
     input  wire [7:0] uio_in,   // IOs: Input path
     output wire [7:0] uio_out,  // IOs: Output path
     output wire [7:0] uio_oe,   // IOs: Enable path (active high: 0=input, 1=output)
-    inout  wire [7:0] ua, // analog pins
+    inout  wire [7:0] ua,       // analog pins
     input  wire       ena,      // will go high when the design is enabled
     input  wire       clk,      // clock
     input  wire       rst_n     // reset_n - low to reset
 );
-    wire [7:0] r2r_out;
+    // the first 4 pins of the Bidirectional path are used for:
+    // [1:0] bus control lines (BDIR and BC1) are set to input mode (=0),
+    // [3:2] clock divider pins (SEL0, SEL1)  are set to input mode (=0),
+    assign uio_oe[7:0]  = 8'b0000_0000;
+    assign uio_out[7:0] = 8'b0000_0000;
+    assign uo_out[7:3]  =    5'b0_0000; // the upper 5 output pins are not used
 
-    r2r_dac_control r2r_dac_control(
-        .clk(clk),                  // expect a 10M clock
-        .n_rst(rst_n),
-        .ext_data(uio_in[0]),       // if this is high, then DAC data comes from ui_in[7:0]
-        .load_divider(uio_in[1]),   // load value set on data to the clock divider
-        .data(ui_in),               // connect to ui_in[7:0]
-        .r2r_out(r2r_out),          // 8 bit out to the R2R DAC
+    wire [14:0] channel_A_dac_ctrl;
+    wire [14:0] channel_B_dac_ctrl;
+    wire [14:0] channel_C_dac_ctrl;
+
+    ay8913 ay8913(
+        .clk(clk),
+        .rst_n(rst_n),
+        .ena(ena),
+        
+        .clock_select(uio_in[3:2]),
+
+        .data(ui_in),
+        .bc1(uio_in[0]),
+        .bdir(uio_in[1]),
+
+        channel_A_dac_ctrl(channel_A_dac_ctrl),
+        channel_B_dac_ctrl(channel_B_dac_ctrl),
+        channel_C_dac_ctrl(channel_C_dac_ctrl),
+
+        channel_A_pwm_out(uo_out[2]),
+        channel_B_pwm_out(uo_out[1]),
+        channel_C_pwm_out(uo_out[0]),
+
         .VPWR(VPWR),
         .VGND(VGND)
         );
 
-    r2r r2r(
-        .b0(r2r_out[0]),
-        .b1(r2r_out[1]),
-        .b2(r2r_out[2]),
-        .b3(r2r_out[3]),
-        .b4(r2r_out[4]),
-        .b5(r2r_out[5]),
-        .b6(r2r_out[6]),
-        .b7(r2r_out[7]),
-        .out(ua[0]),
+    dac_16nfet dac_A(
+        .at0 (channel_A_dac_ctrl[0] ),
+        .at1 (channel_A_dac_ctrl[1] ),
+        .at2 (channel_A_dac_ctrl[2] ),
+        .at3 (channel_A_dac_ctrl[3] ),
+        .at4 (channel_A_dac_ctrl[4] ),
+        .at5 (channel_A_dac_ctrl[5] ),
+        .at6 (channel_A_dac_ctrl[6] ),
+        .at7 (channel_A_dac_ctrl[7] ),
+        .at8 (channel_A_dac_ctrl[8] ),
+        .at9 (channel_A_dac_ctrl[9] ),
+        .at10(channel_A_dac_ctrl[10]),
+        .at11(channel_A_dac_ctrl[11]),
+        .at12(channel_A_dac_ctrl[12]),
+        .at13(channel_A_dac_ctrl[13]),
+        .at14(channel_A_dac_ctrl[14]),
+        .out(ua[2]),
         .VSUBS(VGND),
         .GND(VGND)
         );
 
-    // ties for the output enables
-    assign uo_out[0] = VGND;
-    assign uo_out[1] = VGND;
-    assign uo_out[2] = VGND;
-    assign uo_out[3] = VGND;
-    assign uo_out[4] = VGND;
-    assign uo_out[5] = VGND;
-    assign uo_out[6] = VGND;
-    assign uo_out[7] = VGND;
+    dac_16nfet dac_B(
+        .at0 (channel_B_dac_ctrl[0] ),
+        .at1 (channel_B_dac_ctrl[1] ),
+        .at2 (channel_B_dac_ctrl[2] ),
+        .at3 (channel_B_dac_ctrl[3] ),
+        .at4 (channel_B_dac_ctrl[4] ),
+        .at5 (channel_B_dac_ctrl[5] ),
+        .at6 (channel_B_dac_ctrl[6] ),
+        .at7 (channel_B_dac_ctrl[7] ),
+        .at8 (channel_B_dac_ctrl[8] ),
+        .at9 (channel_B_dac_ctrl[9] ),
+        .at10(channel_B_dac_ctrl[10]),
+        .at11(channel_B_dac_ctrl[11]),
+        .at12(channel_B_dac_ctrl[12]),
+        .at13(channel_B_dac_ctrl[13]),
+        .at14(channel_B_dac_ctrl[14]),
+        .out(ua[1]),
+        .VSUBS(VGND),
+        .GND(VGND)
+        );
 
-    assign uio_out[0] = VGND;
-    assign uio_out[1] = VGND;
-    assign uio_out[2] = VGND;
-    assign uio_out[3] = VGND;
-    assign uio_out[4] = VGND;
-    assign uio_out[5] = VGND;
-    assign uio_out[6] = VGND;
-    assign uio_out[7] = VGND;
-
-    assign uio_oe[0] = VGND;
-    assign uio_oe[1] = VGND;
-    assign uio_oe[2] = VGND;
-    assign uio_oe[3] = VGND;
-    assign uio_oe[4] = VGND;
-    assign uio_oe[5] = VGND;
-    assign uio_oe[6] = VGND;
-    assign uio_oe[7] = VGND;
+    dac_16nfet dac_C(
+        .at0 (channel_C_dac_ctrl[0] ),
+        .at1 (channel_C_dac_ctrl[1] ),
+        .at2 (channel_C_dac_ctrl[2] ),
+        .at3 (channel_C_dac_ctrl[3] ),
+        .at4 (channel_C_dac_ctrl[4] ),
+        .at5 (channel_C_dac_ctrl[5] ),
+        .at6 (channel_C_dac_ctrl[6] ),
+        .at7 (channel_C_dac_ctrl[7] ),
+        .at8 (channel_C_dac_ctrl[8] ),
+        .at9 (channel_C_dac_ctrl[9] ),
+        .at10(channel_C_dac_ctrl[10]),
+        .at11(channel_C_dac_ctrl[11]),
+        .at12(channel_C_dac_ctrl[12]),
+        .at13(channel_C_dac_ctrl[13]),
+        .at14(channel_C_dac_ctrl[14]),
+        .out(ua[0]),
+        .VSUBS(VGND),
+        .GND(VGND)
+        );
 
 endmodule

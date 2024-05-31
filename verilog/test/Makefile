@@ -4,11 +4,17 @@
 SIM ?= icarus
 TOPLEVEL_LANG ?= verilog
 
-VERILOG_SOURCES += $(PWD)/../rtl/r2r_dac_control.v
+VERILOG_SOURCES += $(PWD)/../rtl/amplitude.v
+VERILOG_SOURCES += $(PWD)/../rtl/envelope.v
+VERILOG_SOURCES += $(PWD)/../rtl/noise.v
+VERILOG_SOURCES += $(PWD)/../rtl/pwm.v
+VERILOG_SOURCES += $(PWD)/../rtl/signal_edge.v
+VERILOG_SOURCES += $(PWD)/../rtl/tone.v
+VERILOG_SOURCES += $(PWD)/../rtl/ay8913.v
 # use VHDL_SOURCES for VHDL files
 
 # TOPLEVEL is the name of the toplevel module in your Verilog or VHDL file
-TOPLEVEL = r2r_dac_control
+TOPLEVEL = ay8913
 
 # MODULE is the basename of the Python test file
 MODULE = test

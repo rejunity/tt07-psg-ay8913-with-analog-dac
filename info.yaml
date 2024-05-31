@@ -1,38 +1,46 @@
 # Tiny Tapeout project information
 project:
-  title:        "Analog 8bit R2R DAC"      # Project title
-  author:       "Matt Venn"      # Your name
-  discord:      "mattvenn"      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
-  description:  "A simple 8 bit DAC with a sawtooth waveform driver"      # One line description of what your project does
-  language:     "Analog" # other examples include Verilog, Amaranth, VHDL, etc
-  clock_hz:     0       # Clock frequency in Hz (or 0 if not applicable)
+
+  title:        "Classic 8-bit era Programmable Sound Generator AY-3-8913"
+  author:       "ReJ aka Renaldas Zioma"
+  discord:      "rzioma"
+  description:  "The AY-3-8913 is a 3-voice programmable sound generator (PSG) chip from General Instruments. The AY-3-8913 is a smaller variant of AY-3-8910 or its analog YM2149."
+  language:     "Verilog, Analog" # Verilog, Amaranth, VHDL, etc
+  clock_hz:     2000000           # Clock frequency in Hz (or 0 if not applicable)
 
   # How many tiles your design occupies? A single tile is about 167x108 uM.
   tiles: "1x2"          # Valid values: 1x1 (digital only), 1x2, 2x2, 3x2, 4x2, 6x2 or 8x2
 
   # Your top module name must start with "tt_um_". Make it unique by including your github username:
-  top_module:  "tt_um_mattvenn_r2r_dac"
+  top_module:  "tt_um_rejunity_ay8913"
   
   # List your project's source files here. Source files must be in ./src and you must list each source file separately, one per line:
   source_files:        
+    - "tone.v"
+    - "amplitude.v"
+    - "noise.v"
+    - "envelope.v"
+    - "signal_edge.v"
+    - "pwm.v"
+    - "ay8913.v"
     - "project.v"
 
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
 pinout:
   # Inputs
-  ui[0]: "bit 0"
-  ui[1]: "bit 1"
-  ui[2]: "bit 2"
-  ui[3]: "bit 3"
-  ui[4]: "bit 4"
-  ui[5]: "bit 5"
-  ui[6]: "bit 6"
-  ui[7]: "bit 7"
+  ui[0]: "multiplexed data/address bus LSB"
+  ui[1]: "multiplexed data/address bus"
+  ui[2]: "multiplexed data/address bus"
+  ui[3]: "multiplexed data/address bus"
+  ui[4]: "multiplexed data/address bus"
+  ui[5]: "multiplexed data/address bus"
+  ui[6]: "multiplexed data/address bus"
+  ui[7]: "multiplexed data/address bus MSB"
 
   # Outputs
-  uo[0]: ""
-  uo[1]: ""
-  uo[2]: ""
+  uo[0]: "(pwm) channel C "
+  uo[1]: "(pwm) channel B"
+  uo[2]: "(pwm) channel A"
   uo[3]: ""
   uo[4]: ""
   uo[5]: ""
@@ -40,17 +48,19 @@ pinout:
   uo[7]: ""
 
   # Bidirectional pins
-  uio[0]: "external data"
-  uio[1]: "load divider"
-  uio[2]: ""
-  uio[3]: ""
+  uio[0]: "(in) **BC1** bus control"
+  uio[1]: "(in) **BDIR** bus direction"
+  uio[2]: "(in) **SEL0** clock divider"
+  uio[3]: "(in) **SEL1** clock divider"
   uio[4]: ""
   uio[5]: ""
   uio[6]: ""
   uio[7]: ""
 
   # Analog pins - you can add more if you use them, up to 8
-  ua[0]: "DAC output"
-
+  ua[0]: "(out) channel C"
+  ua[1]: "(out) channel B"
+  ua[2]: "(out) channel A"
+x
 # Do not change!
 yaml_version: 6
