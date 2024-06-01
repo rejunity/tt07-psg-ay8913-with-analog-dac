@@ -1,10 +1,14 @@
 ![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/lvs/badge.svg)
 
-# Tiny Tapeout Analog R2R DAC
+# Free open source ASIC for AY-3-8913 PSG
 
-- [Read the documentation for project](docs/info.md)
+- Includes **analog** DACs!
+- Submitted to CI2406 chip fabrication shuttle via Tiny Tapeout 07
+- Visit the main code repository: https://github.com/rejunity/tt05-psg-ay8913
 
 ![layout](docs/layout.png)
+
+Digital part of the design in the large square at the top. 3 analog DACs at the bottom.
 
 ## What is Tiny Tapeout?
 
