@@ -4,6 +4,7 @@
 
 ## Perhaps the first ever open-source chip replica that contains both analog and digital copmonents of the original design!
 
+- 130nm silicon ready
 - Includes **analog** DACs!
 - Submitted to CI2406 chip fabrication shuttle via Tiny Tapeout 07
 - Visit the main code repository: https://github.com/rejunity/tt05-psg-ay8913
