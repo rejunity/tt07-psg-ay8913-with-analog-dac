@@ -54,6 +54,9 @@ pinout:
   ua[0]: "(out) channel C"
   ua[1]: "(out) channel B"
   ua[2]: "(out) channel A"
+  ua[3]: ""
+  ua[4]: ""
+  ua[5]: ""
 
 # Do not change!
 yaml_version: 6
