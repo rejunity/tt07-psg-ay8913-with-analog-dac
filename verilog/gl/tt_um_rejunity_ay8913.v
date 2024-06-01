@@ -22,8 +22,7 @@ module tt_um_rejunity_ay8913 (
     // assign uio_out[7:0] = 8'b0000_0000;
     // assign uo_out[7:3]  =    5'b0_0000; // the upper 5 output pins are not used
 
-    // Tie unused pins to the ground
-    // Using VGND instead of 0 to be on the safe side with LVS check
+    // ties for the output enables
     assign uo_out[3] = VGND;
     assign uo_out[4] = VGND;
     assign uo_out[5] = VGND;
@@ -74,6 +73,25 @@ module tt_um_rejunity_ay8913 (
         .VPWR(VPWR),
         .VGND(VGND)
         );
+
+
+// check names!!!
+// module ay8913 (VGND,
+//     VPWR,
+//     bc1,
+//     bdir,
+//     channel_A_pwm_out,
+//     channel_B_pwm_out,
+//     channel_C_pwm_out,
+//     clk,
+//     ena,
+//     rst_n,
+//     channel_A_dac_ctrl,
+//     channel_B_dac_ctrl,
+//     channel_C_dac_ctrl,
+//     clock_select,
+//     data);
+
 
     // .subckt dac_16nfet VDD AT0 AT1 AT2 AT3 AT4 AT5 AT6 AT7 AT8 AT9 AT10 AT11 AT12 AT13 AT14 OUT VSS
     dac_16nfet dac_A(
