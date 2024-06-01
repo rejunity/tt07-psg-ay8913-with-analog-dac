@@ -2,7 +2,7 @@
 
 # Free open source ASIC for AY-3-8913 PSG
 
-Perhaps the **first ever** open-source chip replica that contains both analog and digital copmonents of the original design!
+## qPerhaps the **first ever** open-source chip replica that contains both analog and digital copmonents of the original design!
 
 - Includes **analog** DACs!
 - Submitted to CI2406 chip fabrication shuttle via Tiny Tapeout 07
