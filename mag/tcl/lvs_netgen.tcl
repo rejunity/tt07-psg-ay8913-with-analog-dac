@@ -7,5 +7,6 @@ readnet spice ../xschem/simulation/dac_16nfet.spice $source
 readnet verilog ../verilog/gl/ay8913.v $source
 # top level GL verilog
 # also could be: readnet verilog ../verilog/gl/$project.v $source
+# Matt links project.v to /gl/$project.v ^^^
 readnet verilog ../src/project.v $source
 lvs "$layout $project" "$source $project" $::env(PDK_ROOT)/sky130A/libs.tech/netgen/sky130A_setup.tcl lvs.report -blackbox
